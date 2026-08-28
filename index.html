@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELVIS | AIMATEL PROJECTS</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="topbar">
+<div><h1>ELVIS | AIMATEL PROJECTS</h1><small>ISP FIELD OPERATIONS • FIBER • NETWORKING</small></div>
+<div class="mono" style="font-size:11px; text-align:right"><span id="clock"></span><br><span style="color:#00e676">● ONLINE - LOCAL STORAGE</span></div>
+</div>
+
+<div class="main">
+<div class="sidebar">
+<button class="nav-btn active" onclick="tab('dash')" id="b-dash"><span><i class="fa-solid fa-chart-line"></i> Dashboard</span><small id="c-all">0</small></button>
+<button class="nav-btn" onclick="tab('tickets')" id="b-tickets"><span><i class="fa-solid fa-ticket"></i> ISP Tickets</span></button>
+<button class="nav-btn" onclick="tab('install')" id="b-install"><span><i class="fa-solid fa-house-signal"></i> Installations</span></button>
+<button class="nav-btn" onclick="tab('los')" id="b-los"><span><i class="fa-solid fa-triangle-exclamation"></i> LOS / Faults</span><small id="c-los" style="background:#ef4444;color:white">0</small></button>
+<button class="nav-btn" onclick="tab('maint')" id="b-maint"><span><i class="fa-solid fa-screwdriver-wrench"></i> Maintenance</span></button>
+<button class="nav-btn" onclick="tab('inv')" id="b-inv"><span><i class="fa-solid fa-boxes-stacked"></i> Inventory</span></button>
+<button class="nav-btn" onclick="tab('photos')" id="b-photos"><span><i class="fa-solid fa-camera"></i> Site Photos</span></button>
+<div style="margin-top:18px"><button onclick="exportCSV()" class="btn" style="background:white;color:#0f4c75;border:1px solid #0f4c75"><i class="fa-solid fa-download"></i> Export Daily Report</button></div>
+</div>
+
+<div class="content">
+
+<!-- DASHBOARD -->
+<div id="t-dash">
+<div class="grid2 grid4">
+<div class="card kpi"><label>Today's Jobs</label><b id="k-today">0</b><small class="mono">28 Aug 2026</small></div>
+<div class="card kpi green"><label>Completed</label><b id="k-done">0</b><small>Restored</small></div>
+<div class="card kpi red"><label>Pending / LOS</label><b id="k-pend">0</b><small>Needs action</small></div>
+<div class="card kpi orange"><label>Fiber Cuts</label><b id="k-fiber">0</b><small>This week</small></div>
+</div>
+
+<div class="grid2" style="margin-top:12px">
+<div class="card"><h3><i class="fa-solid fa-list"></i> Simple Daily Activity Summary</h3><div id="summaryList" class="mono" style="font-size:12px;line-height:1.8"></div></div>
+<div class="card"><h3><i class="fa-solid fa-box"></i> Inventory Used Today</h3><table class="table"><thead><tr><th>Item</th><th>Used</th><th>Remaining</th></tr></thead><tbody id="invSummary"></tbody></table></div>
+</div>
+
+<div class="card" style="margin-top:12px"><h3>Recent Tickets</h3><div id="recentTickets"></div></div>
+</div>
+
+<!-- TICKETS -->
+<div id="t-tickets" class="hidden">
+<div class="card"><h3>New Job / Ticket</h3>
+<div class="grid2">
+<input id="tkCustomer" class="input" placeholder="Customer: e.g. John - AP03">
+<select id="tkJob" class="input"><option>LOS</option><option>No Internet</option><option>Slow</option><option>Installation</option><option>Maintenance</option><option>Fiber Cut</option></select>
+<input id="tkLoc" class="input" placeholder="Location: AP 03 / Wajir-03">
+<input id="tkCause" class="input" placeholder="Cause: Broken drop cable">
+<input id="tkAction" class="input" placeholder="Action: Replaced 35m cable">
+<input id="tkPower" class="input" placeholder="ONU power: -21 dBm">
+<select id="tkStatus" class="input"><option>Completed</option><option>Pending</option><option>Monitoring</option></select>
+<input type="file" id="tkPhotos" multiple accept="image/*" class="input">
+</div>
+<button onclick="addTicket()" class="btn" style="margin-top:10px">Save Ticket + Update Dashboard</button>
+</div>
+<div class="card"><div id="ticketList"></div></div>
+</div>
+
+<!-- LOS SPECIFIC -->
+<div id="t-los" class="hidden">
+<div class="card" style="border:2px solid #fecaca">
+<h3 style="color:#b91c1c"><i class="fa-solid fa-circle-exclamation"></i> LOS TICKET #<span id="losNum">024</span></h3>
+<div class="grid2">
+<input id="losCustomer" class="input" placeholder="Customer █████████">
+<input id="losLoc" class="input" placeholder="Location █████████">
+<input id="losTime" class="input" type="time" value="14:20">
+<select id="losIssue" class="input"><option>🔴 LOS</option><option>🟡 PON Blinking</option><option>🔴 No Power</option></select>
+<input id="losOLT" class="input" placeholder="OLT: vSOL">
+<input id="losPON" class="input" placeholder="PON: 1/4/12">
+<select id="losONU" class="input"><option>ONU Online</option><option>ONU Offline</option></select>
+<input id="losPower" class="input" placeholder="Optical Power: -23.4 dBm">
+<input id="losCause" class="input" placeholder="Cause: Fiber cut">
+<input id="losAction" class="input" placeholder="Action: Spliced">
+<select id="losResult" class="input"><option>🟢 Restored</option><option>🟡 Pending</option><option>🔴 Not Restored</option></select>
+<input type="file" id="losPhotos" multiple accept="image/*" class="input">
+</div>
+<button onclick="addLOS()" class="btn red" style="margin-top:10px"><i class="fa-solid fa-check"></i> COMPLETE TICKET</button>
+</div>
+<div class="card"><h3>LOS History</h3><div id="losHistory"></div></div>
+</div>
+
+<!-- INSTALL -->
+<div id="t-install" class="hidden">
+<div class="card"><h3>New Installation</h3>
+<div class="grid2">
+<input id="iCustomer" class="input" placeholder="Customer">
+<input id="iLocation" class="input" placeholder="Location / AP">
+<input id="iONU" class="input" placeholder="ONU SN / Model">
+<input id="iRouter" class="input" placeholder="Router Model">
+<input id="iCable" class="input" placeholder="Drop cable length e.g. 120m">
+<input id="iSplitter" class="input" placeholder="Splitter e.g. 1:8 Port 3">
+<input id="iPower" class="input" placeholder="Optical power e.g. -20.8 dBm">
+<input id="iPPPoE" class="input" placeholder="PPPoE username">
+<input id="iDate" class="input" type="date">
+<input type="file" id="iPhotos" multiple accept="image/*" class="input">
+</div>
+<button onclick="addInstall()" class="btn green" style="margin-top:10px">Save Installation</button>
+</div>
+<div class="card"><div id="installList"></div></div>
+</div>
+
+<!-- MAINT -->
+<div id="t-maint" class="hidden"><div class="card"><h3>Maintenance Log</h3><div class="grid2"><input id="mTask" class="input" placeholder="Task e.g. OLT reboot"><input id="mLoc" class="input" placeholder="Location"><input id="mDate" class="input" type="date"><input id="mBy" class="input" placeholder="Technician: Elvis"><textarea id="mNotes" class="input" style="grid-column:1/-1" placeholder="What you did..."></textarea></div><button onclick="addMaint()" class="btn" style="margin-top:10px">Add to History</button></div><div class="card"><div id="maintList"></div></div></div>
+
+<!-- INVENTORY -->
+<div id="t-inv" class="hidden">
+<div class="card"><h3>Inventory - End of Day Update</h3><table class="table"><thead><tr><th>Item</th><th>Used Today</th><th>Remaining</th><th>+ Use</th></tr></thead><tbody id="invTable"></tbody></table><button onclick="saveInv()" class="btn" style="margin-top:12px">Save Inventory</button></div>
+</div>
+
+<!-- PHOTOS -->
+<div id="t-photos" class="hidden">
+<div class="card"><h3>📸 Site Photos</h3><input type="file" id="sitePhoto" accept="image/*" class="input"><input id="photoCap" class="input" placeholder="Caption: Installation - Customer A, AP Wajir-03, -20.8 dBm" style="margin-top:8px"><button onclick="addSitePhoto()" class="btn" style="margin-top:8px">Upload</button><div id="photoGrid" class="photo-grid" style="margin-top:12px"></div></div>
+</div>
+
+</div>
+</div>
+
+<script>
+let tickets = JSON.parse(localStorage.getItem('tickets')||'[]');
+let installs = JSON.parse(localStorage.getItem('installs')||'[]');
+let los = JSON.parse(localStorage.getItem('los')||'[]');
+let maint = JSON.parse(localStorage.getItem('maint')||'[]');
+let inv = JSON.parse(localStorage.getItem('inv')||'[{"name":"SC/APC connectors","used":8,"rem":142},{"name":"ONU","used":2,"rem":17},{"name":"1×8 splitter","used":1,"rem":6},{"name":"Drop cable","used":180,"rem":1420,"unit":"m"},{"name":"RJ45","used":6,"rem":94},{"name":"Fiber sleeves","used":5,"rem":80}]');
+let photos = JSON.parse(localStorage.getItem('photos')||'[]');
+
+setInterval(()=>document.getElementById('clock').innerText=new Date().toLocaleTimeString(),1000);
+
+function tab(t){
+document.querySelectorAll('[id^="t-"]').forEach(e=>e.classList.add('hidden'));
+document.getElementById('t-'+t).classList.remove('hidden');
+document.querySelectorAll('.nav-btn').forEach(e=>e.classList.remove('active'));
+document.getElementById('b-'+t).classList.add('active');
+renderAll();
+}
+function toBase64(file){return new Promise(res=>{const r=new FileReader(); r.onload=e=>res(e.target.result); r.readAsDataURL(file);})}
+
+async function addTicket(){
+let imgs=[]; for(let f of document.getElementById('tkPhotos').files){imgs.push(await toBase64(f))}
+let o={id:Date.now(),customer:tkCustomer.value,job:tkJob.value,loc:tkLoc.value,cause:tkCause.value,action:tkAction.value,power:tkPower.value,status:tkStatus.value,photos:imgs,date:new Date().toLocaleString()};
+if(!o.customer) return alert('Customer needed'); tickets.unshift(o); localStorage.setItem('tickets',JSON.stringify(tickets)); renderAll(); alert('Ticket saved');
+}
+function addLOS(){
+let o={id:Date.now(),customer:losCustomer.value,loc:losLoc.value,time:losTime.value,issue:losIssue.value,olt:losOLT.value,pon:losPON.value,onu:losONU.value,power:losPower.value,cause:losCause.value,action:losAction.value,result:losResult.value,date:new Date().toLocaleString()};
+los.unshift(o); localStorage.setItem('los',JSON.stringify(los)); document.getElementById('losNum').innerText=String(los.length+24).padStart(3,'0'); renderAll();
+}
+function addInstall(){
+let o={id:Date.now(),customer:iCustomer.value,location:iLocation.value,onu:iONU.value,router:iRouter.value,cable:iCable.value,splitter:iSplitter.value,power:iPower.value,pppoe:iPPPoE.value,date:iDate.value||new Date().toISOString().slice(0,10)};
+installs.unshift(o); localStorage.setItem('installs',JSON.stringify(installs)); renderAll();
+}
+function addMaint(){let o={id:Date.now(),task:mTask.value,loc:mLoc.value,date:mDate.value,by:mBy.value,notes:mNotes.value}; maint.unshift(o); localStorage.setItem('maint',JSON.stringify(maint)); renderAll();}
+function addSitePhoto(){
+const f=sitePhoto.files[0]; if(!f) return alert('Pick photo'); const r=new FileReader(); r.onload=e=>{
+let o={id:Date.now(),src:e.target.result,cap:photoCap.value||'Site photo',date:new Date().toLocaleString()};
+photos.unshift(o); localStorage.setItem('photos',JSON.stringify(photos)); renderAll();
+}; r.readAsDataURL(f);
+}
+
+function saveInv(){localStorage.setItem('inv',JSON.stringify(inv)); alert('Inventory saved'); renderAll();}
+
+function renderAll(){
+document.getElementById('k-today').innerText=tickets.length+los.length+installs.length;
+document.getElementById('k-done').innerText=tickets.filter(t=>t.status=='Completed').length+los.filter(t=>t.result.includes('Restored')).length;
+document.getElementById('k-pend').innerText=tickets.filter(t=>t.status!='Completed').length+los.filter(t=>!t.result.includes('Restored')).length;
+document.getElementById('k-fiber').innerText=tickets.filter(t=>t.job=='Fiber Cut').length+los.filter(t=>t.cause.toLowerCase().includes('fiber')).length;
+document.getElementById('c-all').innerText=tickets.length;
+document.getElementById('c-los').innerText=los.length;
+
+document.getElementById('summaryList').innerHTML=`Installations: ${installs.length}<br>LOS/faults: ${los.length}<br>Maintenance: ${maint.length}<br>Completed today: ${document.getElementById('k-done').innerText}`;
+let invT=document.getElementById('invTable'); invT.innerHTML=''; inv.forEach((it,i)=>{
+invT.innerHTML+=`<tr><td>${it.name}</td><td><input type="number" value="${it.used}" onchange="inv[${i}].used=this.value" class="input" style="padding:4px"></td><td><input type="number" value="${it.rem}" onchange="inv[${i}].rem=this.value" class="input" style="padding:4px"> ${it.unit||''}</td><td><button onclick="inv[${i}].used++ ; inv[${i}].rem--; renderAll()" class="btn" style="padding:4px 8px">+1</button></td></tr>`;
+});
+document.getElementById('invSummary').innerHTML=inv.map(it=>`<tr><td>${it.name}</td><td>${it.used}${it.unit||''}</td><td>${it.rem}${it.unit||''}</td></tr>`).join('');
+
+document.getElementById('ticketList').innerHTML=tickets.map(t=>`<div style="border-bottom:1px solid #eee;padding:8px 0"><b>${t.customer}</b> - <span class="badge ${t.job=='LOS'?'los':'ok'}">${t.job}</span> @ ${t.loc}<br><small class="mono">Cause: ${t.cause} | Action: ${t.action} | ${t.power} | ${t.status} | ${t.date}</small><br>${t.photos.map(p=>`<img src="${p}" style="width:50px;height:50px;object-fit:cover;border-radius:6px;margin:2px">`).join('')}</div>`).join('')||'No tickets';
+document.getElementById('losHistory').innerHTML=los.map(l=>`<div style="border-bottom:1px solid #fee2e2;padding:8px 0"><b>LOS #${l.id}</b> ${l.customer} @ ${l.loc} - ${l.power} - ${l.result}<br><small class="mono">${l.olt} | ${l.pon} | ${l.onu} | Cause:${l.cause} | Action:${l.action} | ${l.date}</small></div>`).join('')||'No LOS';
+document.getElementById('installList').innerHTML=installs.map(i=>`<div style="border-bottom:1px solid #eee;padding:8px 0"><b>${i.customer}</b> - ${i.location} - ONU:${i.onu} Router:${i.router}<br><small class="mono">Cable:${i.cable} Splitter:${i.splitter} Power:${i.power} PPPoE:${i.pppoe} Date:${i.date}</small></div>`).join('')||'No installs';
+document.getElementById('maintList').innerHTML=maint.map(m=>`<div style="border-bottom:1px solid #eee;padding:8px 0"><b>${m.task}</b> @ ${m.loc} - ${m.date} by ${m.by}<br><small>${m.notes}</small></div>`).join('')||'No maintenance';
+document.getElementById('photoGrid').innerHTML=photos.map(p=>`<div><img src="${p.src}"><small class="mono" style="font-size:10px">${p.cap}<br>${p.date}</small></div>`).join('');
+document.getElementById('recentTickets').innerHTML=tickets.slice(0,5).map(t=>`<div style="padding:6px 0;border-bottom:1px solid #f1f5f9"><b>${t.customer}</b> ${t.job} - ${t.status}</div>`).join('')||'No activity yet';
+}
+function exportCSV(){
+let csv='Type,Customer,Location,Job,Power,Status,Date\\n';
+tickets.forEach(t=>csv+=`Ticket,"${t.customer}","${t.loc}","${t.job}","${t.power}","${t.status}","${t.date}"\\n`);
+los.forEach(l=>csv+=`LOS,"${l.customer}","${l.loc}","${l.issue}","${l.power}","${l.result}","${l.date}"\\n`);
+installs.forEach(i=>csv+=`Install,"${i.customer}","${i.location}","ONU ${i.onu}","${i.power}","Done","${i.date}"\\n`);
+const blob=new Blob([csv],{type:'text/csv'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='AIMATEL_Daily_'+new Date().toISOString().slice(0,10)+'.csv'; a.click();
+}
+renderAll();
+</script>
+</body>
+  </html>
