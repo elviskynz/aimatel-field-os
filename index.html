@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELVIS | AIMATEL PROJECTS - FIELD OS</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap');
+:root{--navy:#071a2e;--blue:#0f4c75;--cyan:#00d4ff;--green:#00e676;--red:#ff3b3b}
+*{box-sizing:border-box;font-family:'Inter',sans-serif} body{margin:0;background:#eef4fb;color:#1e293b;min-height:100vh;
+background-image: radial-gradient(circle at 15% 20%, rgba(0,212,255,0.18) 0%, transparent 45%), radial-gradient(circle at 85% 75%, rgba(15,76,117,0.15) 0%, transparent 50%), linear-gradient(90deg, rgba(15,76,117,0.04) 1px, transparent 1px), linear-gradient(rgba(15,76,117,0.04) 1px, transparent 1px); background-size:auto,auto,42px 42px,42px 42px}
+.top{background:linear-gradient(90deg,#071a2e 0%,#0f4c75 70%);color:white;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--cyan);position:sticky;top:0;z-index:100}
+.top h1{margin:0;font-size:16px;letter-spacing:1.5px;font-weight:800}.top small{color:var(--cyan);font-size:10px;letter-spacing:2px;font-family:'JetBrains Mono'}.mono{font-family:'JetBrains Mono',monospace}
+.wrap{display:flex;flex-direction:column} @media(min-width:900px){.wrap{flex-direction:row}}
+.side{width:100%;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);padding:10px;border-right:1px solid #e2e8f0} @media(min-width:900px){.side{width:240px;min-height:100vh;position:sticky;top:67px}}
+.nav{width:100%;text-align:left;padding:11px 12px;border-radius:12px;border:1px solid transparent;background:transparent;cursor:pointer;display:flex;justify-content:space-between;margin-bottom:5px;font-size:13px;font-weight:600}
+.nav.active{background:var(--blue);color:white;box-shadow:0 6px 16px rgba(15,76,117,0.3)}.nav b{float:right;background:#e2e8f0;padding:2px 7px;border-radius:10px;font-size:11px;color:var(--blue)}.nav.active b{background:white}
+.main{flex:1;padding:12px}.card{background:rgba(255,255,255,0.96);border:1px solid #e2e8f0;border-radius:18px;padding:14px;margin-bottom:12px;box-shadow:0 8px 22px rgba(15,76,117,0.07)}
+.grid{display:grid;gap:10px}.grid2{grid-template-columns:1fr}.grid4{grid-template-columns:1fr 1fr} @media(min-width:700px){.grid2{grid-template-columns:1fr 1fr}.grid4{grid-template-columns:repeat(4,1fr)}}
+.kpi{border-left:5px solid var(--blue)}.kpi.green{border-left-color:var(--green)}.kpi.red{border-left-color:var(--red)}.kpi.orange{border-left-color:#ff9800}.kpi b{font-size:26px;display:block}.kpi label{font-size:10px;text-transform:uppercase;color:#64748b;letter-spacing:1px}
+.inp{border:1px solid #cbd5e1;padding:9px 11px;border-radius:10px;width:100%;font-size:12px;background:white}.btn{border:none;padding:10px;border-radius:10px;font-weight:700;cursor:pointer;width:100%;color:white;background:var(--blue)}.btn.g{background:#0a7a42}.btn.r{background:#b91c1c}
+.tbl{width:100%;border-collapse:collapse;font-size:12px}.tbl th{background:var(--blue);color:white;padding:8px;text-align:left;font-size:10px}.tbl td{padding:8px;border-bottom:1px solid #f1f5f9;vertical-align:top}
+.badge{font-size:9px;padding:3px 7px;border-radius:20px;font-weight:700}.los{background:#fee2e2;color:#991b1b}.ok{background:#dcfce7;color:#166534}
+.revolve{animation:fade.6s} @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.hidden{display:none}.photos{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.photos img{width:100%;height:85px;object-fit:cover;border-radius:10px}
+</style>
+</head>
+<body>
+<div class="top"><div><h1>ELVIS | AIMATEL PROJECTS</h1><small>ISP FIELD OPERATIONS • FIBER • NETWORKING</small></div><div class="mono" style="text-align:right;font-size:11px"><span id="clock"></span><br><span style="color:#00e676">● LOCAL DB • AUTO-REVOLVE ON</span></div></div>
+
+<div class="wrap">
+<div class="side">
+<button class="nav active" onclick="go('dash')" id="n-dash"><span><i class="fa-solid fa-gauge"></i> Dashboard</span><b id="c-all">0</b></button>
+<button class="nav" onclick="go('tickets')" id="n-tickets"><span><i class="fa-solid fa-ticket"></i> Tickets</span><b id="c-tick">0</b></button>
+<button class="nav" onclick="go('los')" id="n-los"><span><i class="fa-solid fa-triangle-exclamation"></i> LOS/Faults</span><b id="c-los" style="background:#ef4444;color:white">0</b></button>
+<button class="nav" onclick="go('install')" id="n-install"><span><i class="fa-solid fa-house-signal"></i> Installs</span><b id="c-inst">0</b></button>
+<button class="nav" onclick="go('maint')" id="n-maint"><span><i class="fa-solid fa-wrench"></i> Maintenance</span></button>
+<button class="nav" onclick="go('inv')" id="n-inv"><span><i class="fa-solid fa-boxes-stacked"></i> Inventory</span></button>
+<button class="nav" onclick="go('photos')" id="n-photos"><span><i class="fa-solid fa-camera"></i> Site Photos</span><b id="c-photo">0</b></button>
+<div style="margin-top:14px"><label class="mono" style="font-size:10px"><input type="checkbox" id="autoRevolve" checked> Auto-revolve dashboard (8s)</label><button onclick="exportAll()" class="btn" style="background:white;color:#0f4c75;border:1px solid #0f4c75;margin-top:8px;font-size:11px"><i class="fa-solid fa-download"></i> Export Report</button></div>
+</div>
+
+<div class="main">
+
+<!-- DASHBOARD REVOLVING -->
+<div id="p-dash" class="revolve">
+<div class="grid grid4">
+<div class="card kpi"><label>Today's Jobs</label><b id="k-today">0</b><small class="mono">Active</small></div>
+<div class="card kpi green"><label>Completed</label><b id="k-done">0</b><small>Restored</small></div>
+<div class="card kpi red"><label>Pending</label><b id="k-pend">0</b><small>LOS / Faults</small></div>
+<div class="card kpi orange"><label>Installations</label><b id="k-inst">0</b><small>New clients</small></div>
+</div>
+<div class="grid grid2" style="margin-top:10px">
+<div class="card"><h3 style="margin:0 0 8px"><i class="fa-solid fa-chart-simple"></i> Today's Revolving View: <span id="revolveTitle" style="color:#0f4c75">Tickets</span></h3><div id="revolveBox"></div></div>
+<div class="card"><h3><i class="fa-solid fa-clipboard-list"></i> Daily Activity Summary</h3><div id="summary" class="mono" style="font-size:12px;line-height:2"></div><table class="tbl" style="margin-top:8px"><thead><tr><th>Item</th><th>Used</th><th>Remain</th></tr></thead><tbody id="invDash"></tbody></table></div>
+</div>
+</div>
+
+<!-- TICKETS -->
+<div id="p-tickets" class="hidden"><div class="card"><h3>ISP Ticket - Finish Job</h3><div class="grid grid2"><input id="tCust" class="inp" placeholder="Customer: John"><select id="tJob" class="inp"><option>LOS</option><option>No Internet</option><option>Slow</option><option>Installation</option><option>Maintenance</option></select><input id="tLoc" class="inp" placeholder="Location: AP 03"><input id="tCause" class="inp" placeholder="Cause: Broken drop cable"><input id="tAction" class="inp" placeholder="Action: Replaced 35m cable"><input id="tPower" class="inp" placeholder="ONU power: -21 dBm"><select id="tStatus" class="inp"><option>Completed</option><option>Pending</option></select><input type="file" id="tPhotos" multiple accept="image/*" class="inp"></div><button onclick="addTicket()" class="btn" style="margin-top:10px">Save Ticket</button></div><div class="card"><div id="ticketList"></div></div></div>
+
+<!-- LOS -->
+<div id="p-los" class="hidden">
+<div class="card" style="border:2px solid #fecaca"><h3 style="color:#b91c1c;margin:0 0 10px">LOS TICKET #<span id="losNo">024</span> - Field Troubleshooting</h3>
+<div class="grid grid2">
+<input id="lCust" class="inp" placeholder="Customer █████████"><input id="lLoc" class="inp" placeholder="Location █████████"><input id="lTime" class="inp" type="time" value="14:20"><select id="lIssue" class="inp"><option>🔴 LOS</option><option>🟡 PON Blinking</option></select>
+<input id="lOLT" class="inp" placeholder="OLT: vSOL"><input id="lPON" class="inp" placeholder="PON: 1/4/12"><select id="lONU" class="inp"><option>ONU Online</option><option>ONU Offline</option></select><input id="lPower" class="inp" placeholder="Optical Power: -23.4 dBm">
+<input id="lCause" class="inp" placeholder="Cause: Fiber cut"><input id="lAction" class="inp" placeholder="Action: Spliced"><select id="lRes" class="inp"><option>🟢 Restored</option><option>🟡 Pending</option><option>🔴 Not Restored</option></select><input type="file" id="lPhotos" multiple accept="image/*" class="inp">
+</div><button onclick="addLOS()" class="btn r" style="margin-top:10px"><i class="fa-solid fa-check"></i> COMPLETE TICKET</button></div>
+<div class="card"><div id="losList"></div></div>
+</div>
+
+<!-- INSTALLS -->
+<div id="p-install" class="hidden"><div class="card"><h3>Installations Track</h3><div class="grid grid2"><input id="iCust" class="inp" placeholder="Customer"><input id="iLoc" class="inp" placeholder="Location"><input id="iONU" class="inp" placeholder="ONU SN"><input id="iRouter" class="inp" placeholder="Router"><input id="iCable" class="inp" placeholder="Drop cable length"><input id="iSplit" class="inp" placeholder="Splitter"><input id="iPow" class="inp" placeholder="Optical power"><input id="iPPPoE" class="inp" placeholder="PPPoE username"><input id="iDate" class="inp" type="date"><input type="file" id="iPhotos" multiple accept="image/*" class="inp"></div><button onclick="addInstall()" class="btn g" style="margin-top:10px">Save Installation</button></div><div class="card"><div id="installList"></div></div></div>
+
+<!-- MAINT -->
+<div id="p-maint" class="hidden"><div class="card"><h3>Maintenance History</h3><div class="grid grid2"><input id="mTask" class="inp" placeholder="Task"><input id="mLoc" class="inp" placeholder="Location"><input id="mDate" class="inp" type="date"><input id="mBy" class="inp" placeholder="Technician: Elvis"><textarea id="mNotes" class="inp" style="grid-column:1/-1" placeholder="What you did..."></textarea></div><button onclick="addMaint()" class="btn" style="margin-top:10px">Add to History</button></div><div class="card"><div id="maintList"></div></div></div>
+
+<!-- INVENTORY -->
+<div id="p-inv" class="hidden"><div class="card"><h3>Inventory - What You Used Today</h3><table class="tbl"><thead><tr><th>Item</th><th>Used Today</th><th>Remaining</th><th>Use +1</th></tr></thead><tbody id="invTable"></tbody></table><button onclick="saveInv()" class="btn" style="margin-top:10px">Save Inventory</button></div></div>
+
+<!-- PHOTOS -->
+<div id="p-photos" class="hidden"><div class="card"><h3>📸 Site Photos</h3><input type="file" id="sPhoto" accept="image/*" class="inp"><input id="sCap" class="inp" placeholder="Caption: Installation – Customer A, 28 Aug 2026, AP: Wajir-03, Optical: -20.8 dBm, Tech: Elvis" style="margin-top:6px"><button onclick="addPhoto()" class="btn" style="margin-top:6px">Upload Photo</button><div id="photoGrid" class="photos" style="margin-top:12px"></div></div></div>
+
+</div>
+</div>
+
+<script>
+let tickets=JSON.parse(localStorage.getItem('tickets')||'[]'), installs=JSON.parse(localStorage.getItem('installs')||'[]'), los=JSON.parse(localStorage.getItem('los')||'[]'), maint=JSON.parse(localStorage.getItem('maint')||'[]'), photos=JSON.parse(localStorage.getItem('photos')||'[]');
+let inv=JSON.parse(localStorage.getItem('inv')||'[{"name":"SC/APC connectors","used":8,"rem":142},{"name":"ONU","used":2,"rem":17},{"name":"1×8 splitter","used":1,"rem":6},{"name":"Drop cable","used":180,"rem":1420,"unit":"m"},{"name":"RJ45","used":6,"rem":94},{"name":"Fiber sleeves","used":5,"rem":80}]');
+setInterval(()=>clock.innerText=new Date().toLocaleString('en-KE'),1000);
+function go(id){document.querySelectorAll('[id^="p-"]').forEach(e=>e.classList.add('hidden'));document.getElementById('p-'+id).classList.remove('hidden');document.querySelectorAll('.nav').forEach(e=>e.classList.remove('active'));document.getElementById('n-'+id).classList.add('active');render();}
+const b64=f=>new Promise(r=>{const rd=new FileReader();rd.onload=e=>r(e.target.result);rd.readAsDataURL(f)});
+async function getImgs(inp){let a=[];for(let f of inp.files){let rd=new FileReader();a.push(await new Promise(res=>{rd.onload=e=>res(e.target.result);rd.readAsDataURL(f)}))}return a}
+async function addTicket(){let imgs=await getImgs(tPhotos);let o={id:Date.now(),customer:tCust.value,job:tJob.value,loc:tLoc.value,cause:tCause.value,action:tAction.value,power:tPower.value,status:tStatus.value,photos:imgs,date:new Date().toLocaleString()};if(!o.customer) return alert('Customer');tickets.unshift(o);localStorage.setItem('tickets',JSON.stringify(tickets));render();}
+async function addLOS(){let imgs=await getImgs(lPhotos);let o={id:Date.now(),customer:lCust.value,loc:lLoc.value,time:lTime.value,issue:lIssue.value,olt:lOLT.value,pon:lPON.value,onu:lONU.value,power:lPower.value,cause:lCause.value,action:lAction.value,result:lRes.value,photos:imgs,date:new Date().toLocaleString()};los.unshift(o);localStorage.setItem('los',JSON.stringify(los));render();}
+async function addInstall(){let imgs=await getImgs(iPhotos);let o={id:Date.now(),customer:iCust.value,location:iLoc.value,onu:iONU.value,router:iRouter.value,cable:iCable.value,splitter:iSplit.value,power:iPow.value,pppoe:iPPPoE.value,date:iDate.value,photos:imgs};installs.unshift(o);localStorage.setItem('installs',JSON.stringify(installs));render();}
+function addMaint(){let o={id:Date.now(),task:mTask.value,loc:mLoc.value,date:mDate.value,by:mBy.value,notes:mNotes.value};maint.unshift(o);localStorage.setItem('maint',JSON.stringify(maint));render();}
+function addPhoto(){let f=sPhoto.files[0];if(!f) return alert('Pick photo');let rd=new FileReader();rd.onload=e=>{let o={id:Date.now(),src:e.target.result,cap:sCap.value,date:new Date().toLocaleString()};photos.unshift(o);localStorage.setItem('photos',JSON.stringify(photos));render();};rd.readAsDataURL(f);}
+function saveInv(){localStorage.setItem('inv',JSON.stringify(inv));alert('Saved');}
+function render(){
+document.getElementById('k-today').innerText=tickets.length+los.length+installs.length;document.getElementById('k-done').innerText=tickets.filter(t=>t.status=='Completed').length+los.filter(l=>l.result.includes('Restored')).length;document.getElementById('k-pend').innerText=tickets.filter(t=>t.status!='Completed').length;document.getElementById('k-inst').innerText=installs.length;
+c_all.innerText=tickets.length+los.length+installs.length;c_tick.innerText=tickets.length;c_los.innerText=los.length;c_inst.innerText=installs.length;c_photo.innerText=photos.length;
+losNo.innerText=String(los.length+24).padStart(3,'0');
+summary.innerHTML=`Installations: ${installs.length}<br>LOS/Faults: ${los.length}<br>Maintenance: ${maint.length}<br>Completed: ${document.getElementById('k-done').innerText}<br>Fiber Cuts: ${los.filter(l=>l.cause.toLowerCase().includes('cut')).length}`;
+invDash.innerHTML=inv.map(i=>`<tr><td>${i.name}</td><td>${i.used}${i.unit||''}</td><td>${i.rem}${i.unit||''}</td></tr>`).join('');
+invTable.innerHTML=inv.map((it,i)=>`<tr><td>${it.name}</td><td><input type="number" value="${it.used}" onchange="inv[${i}].used=parseInt(this.value)" class="inp" style="padding:4px"></td><td><input type="number" value="${it.rem}" onchange="inv[${i}].rem=parseInt(this.value)" class="inp" style="padding:4px"> ${it.unit||''}</td><td><button onclick="inv[${i}].used++;inv[${i}].rem--;saveInv();render()" class="btn" style="padding:4px 8px">+1</button></td></tr>`).join('');
+ticketList.innerHTML=tickets.map(t=>`<div style="border-bottom:1px solid #eee;padding:8px 0"><b>${t.customer}</b> <span class="badge ${t.job=='LOS'?'los':'ok'}">${t.job}</span> @ ${t.loc} - ${t.power}<br><small class="mono">Cause:${t.cause} | Action:${t.action} | ${t.status} | ${t.date}</small><div>${t.photos.map(p=>`<img src="${p}" style="width:48px;height:48px;object-fit:cover;border-radius:6px;margin:2px">`).join('')}</div></div>`).join('')||'No tickets yet';
+losList.innerHTML=los.map(l=>`<div style="border-bottom:1px solid #fee2e2;padding:8px 0"><b>LOS #${l.id}</b> ${l.customer} @ ${l.loc} ${l.power} - ${l.result}<br><small class="mono">${l.olt} | ${l.pon} | ${l.onu} | Cause:${l.cause} | Action:${l.action} | ${l.date}</small></div>`).join('')||'No LOS';
+installList.innerHTML=installs.map(i=>`<div style="border-bottom:1px solid #eee;padding:8px 0"><b>${i.customer}</b> - ${i.location} - ONU:${i.onu} Router:${i.router}<br><small class="mono">Cable:${i.cable} Split:${i.splitter} Power:${i.power} PPPoE:${i.pppoe} Date:${i.date}</small></div>`).join('')||'No installs';
+maintList.innerHTML=maint.map(m=>`<div style="border-bottom:1px solid #eee;padding:8px 0"><b>${m.task}</b> @ ${m.loc} ${m.date} by ${m.by}<br><small>${m.notes}</small></div>`).join('')||'No maintenance';
+photoGrid.innerHTML=photos.map(p=>`<div style="background:white;border-radius:10px;overflow:hidden;border:1px solid #e2e8f0"><img src="${p.src}" style="width:100%;height:90px;object-fit:cover"><div style="padding:6px"><small class="mono" style="font-size:9px">${p.cap}<br>${p.date}</small></div></div>`).join('');
+}
+// AUTO REVOLVE LOGIC - rotates through Tickets, LOS, Installs, Photos on dashboard
+let revolveIndex=0; const revolveItems=['Tickets','LOS / Faults','Installations','Site Photos'];
+setInterval(()=>{
+ if(!document.getElementById('autoRevolve').checked) return;
+ if(document.getElementById('p-dash').classList.contains('hidden')) return;
+ revolveIndex=(revolveIndex+1)%revolveItems.length;
+ let title=revolveItems[revolveIndex]; document.getElementById('revolveTitle').innerText=title;
+ let box=document.getElementById('revolveBox');
+ if(title=='Tickets') box.innerHTML=document.getElementById('ticketList').innerHTML.slice(0,800);
+ if(title=='LOS / Faults') box.innerHTML=document.getElementById('losList').innerHTML.slice(0,800);
+ if(title=='Installations') box.innerHTML=document.getElementById('installList').innerHTML.slice(0,800);
+ if(title=='Site Photos') box.innerHTML=`<div class="photos">${document.getElementById('photoGrid').innerHTML.slice(0,1000)}</div>`;
+ box.classList.remove('revolve'); void box.offsetWidth; box.classList.add('revolve');
+},8000);
+
+function exportAll(){let csv='Type,Customer,Location,Details,Power,Status,Date\n';tickets.forEach(t=>csv+=`Ticket,"${t.customer}","${t.loc}","${t.cause} | ${t.action}","${t.power}","${t.status}","${t.date}"\n`);los.forEach(l=>csv+=`LOS,"${l.customer}","${l.loc}","${l.cause} | ${l.action}","${l.power}","${l.result}","${l.date}"\n`);installs.forEach(i=>csv+=`Install,"${i.customer}","${i.location}","${i.onu} ${i.router} ${i.cable}","${i.power}","Done","${i.date}"\n`);const b=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='AIMATEL_'+new Date().toISOString().slice(0,10)+'.csv';a.click();}
+render();
+</script>
+</body>
+  </html>
